@@ -7,7 +7,7 @@ const books = require("../models/bookmodel")
 router.post("/add", async (req, res) => {
     try {
         const data = req.body;
-        const bookModel = new books(data);
+        let bookModel = new books(data);
         await bookModel.save().then((res) => {
             res.status(200).json({ message: "Book Added Successfully" });
         })
@@ -21,7 +21,7 @@ router.post("/add", async (req, res) => {
 router.get("/getbooks", async (req, res) => {
     let bookkk;
     try {
-        bookkk = await bookModel.find();
+        bookkk = await books.find();
         res.status(200).json({ bookkk })
     } catch (error) {
         console.log(error)
@@ -34,7 +34,7 @@ router.get("/getbooks/:id", async (req, res) => {
     let bookk;
     const id = req.params.id;
     try {
-        bookk = await bookModel.findById(id)
+        bookk = await books.findById(id)
         res.status(200).json({ bookk })
     } catch (error) {
         console.log(error)
@@ -48,10 +48,11 @@ router.put("/updateBook/:id", async (req, res) => {
     const { bookname, description, author, image, price } = req.body;
     let book;
     try {
-        book = await bookModel.findByIdAndUpdate(id, {
+        book = await books.findByIdAndUpdate(id, {
             bookname,
             description,
             author,
+            
             image,
             price,
         });
@@ -67,7 +68,7 @@ router.put("/updateBook/:id", async (req, res) => {
 router.delete("/deleteBooks/:id", async (req, res) => {
     const id = req.params.id;
     try {
-        await bookModel.findByIdAndDelete(id).
+        await books.findByIdAndDelete(id).
             then(() =>
                 res.status(200).json({ message: "Book deleted successfully" }
                 ))
